@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear cita</title>
+    <title>Crear Servicio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
 </head>
 <body>
@@ -48,26 +48,18 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-                <h1 class="text-center">Crear cita</h1>
+                <h1 class="text-center">Crear Servicio</h1>
                 <div class="card-body"></div>
-                <form th:action="@{/appointments/save}" th:object="${appointment}" method="POST">
+                <form th:action="@{/services/save}" th:object="${service}" method="POST">
+                    <input type="text" name="name" th:field="*{id}" class="form-control" hidden>
                     <div class="form-group">
-                        <label for="">ID CLIENTE</label>
-                        <input type="text" name="name" th:field="*{client.id}" class="form-control">
+                        <label for="">Nombre</label>
+                        <input type="text" name="name" th:field="*{name}" class="form-control">
                     </div>
                     <br>
                     <div class="form-group">
-                        <label for="">ID EMPLEADO</label>
-                        <input type="text" name="id" th:field="*{employee.id}" class="form-control">
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label for="">FECHA Y HORA</label>
-                        <input type="datetime-local" name="datetime" th:field="*{ldt}" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="">ESTADO</label>
-                        <input type="text" name="datetime" th:field="*{status}" class="form-control">
+                        <label for="">Precio</label>
+                        <input type="number" name="id" th:field="*{price}" class="form-control">
                     </div>
                     <br>
                     <div class="box-footer">

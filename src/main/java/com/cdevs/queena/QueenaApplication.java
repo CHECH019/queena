@@ -9,4 +9,4 @@ public class QueenaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(QueenaApplication.class, args);
 	}
-}
+}   
