@@ -1,4 +1,4 @@
-package com.cdevs.queena.commons;
+package com.cdevs.queena.controller.rest;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,25 +11,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public abstract class GenericRestController <T,ID extends Serializable>{
-    private static final String endpt1 = "/save-T";
-    private static final String endpt2 = "/save-T";
-    private static final String endpt3 = "/save-T";
-    private static final String endpt4 = "/save-T";
+import com.cdevs.queena.commons.GenericServiceApi;
 
-    
-    @GetMapping(endpt1)
+abstract public class GenericRestController <T,ID extends Serializable>{
+    protected static final String BASE_URL = "api/v1/";
+
+    @GetMapping("/all")
     public List<T> getAll(Model model){
         return getService().getAll();
     }
 
-    @PostMapping(endpt2)
+    @PostMapping("/save")
     public ResponseEntity<T> save(@RequestBody T entity){
         T e = getService().save(entity); 
         return new ResponseEntity<T>(e, HttpStatus.OK);
     }
 
-    @GetMapping(endpt3)
+    @GetMapping("/find/{id}")
     public ResponseEntity<T> get(@PathVariable ID id, Model model){
         T e = getService().get(id);
         if(e != null)
@@ -39,7 +37,7 @@ public abstract class GenericRestController <T,ID extends Serializable>{
         return new ResponseEntity<T>(e,HttpStatus.OK);
     }
 
-    @GetMapping(endpt4)
+    @GetMapping("/delete/{id}")
     public ResponseEntity<T> delete(@PathVariable ID id){
         T e = getService().get(id);
         if(e != null)
@@ -51,4 +49,7 @@ public abstract class GenericRestController <T,ID extends Serializable>{
     
     public abstract GenericServiceApi<T,ID> getService();
 
+    public static String getBaseUrl() {
+        return BASE_URL;
+    }
 }
