@@ -10,54 +10,39 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.cdevs.queena.iServices.IClientService;
 import com.cdevs.queena.model.Client;
+import com.cdevs.queena.service.api.ClientServiceAPI;
 
 @Controller
 @RequestMapping
 public class ClientController {
     @Autowired
-    private IClientService service;
+    private ClientServiceAPI service;
 
     @GetMapping("/clients")
     public String show(Model model){
-        model.addAttribute("clients", service.getList());
+        model.addAttribute("clients", service.getAll());
         return "/clients/clients";
     }
 
-    @GetMapping("/clients/new")
-    public String createEmployee(Model model){
-        model.addAttribute("client", new Client());
-        return "/clients/new-client";
-    }
-
     @PostMapping("/clients/save")
-    public String saveClient(@ModelAttribute("client") Client client){
+    public String save(@ModelAttribute("client") Client client){
         service.save(client); 
         return "redirect:/clients";
     }
 
-    @GetMapping("/clients/edit/{id}")
-    public String editClient(@PathVariable long id, Model model){
-        model.addAttribute("client", service.getById(id));
-        return "/clients/edit-client";
-    }
-
-    @PostMapping("/clients/{id}")
-    public String updateClient(@PathVariable long id, @ModelAttribute("client") Client client){
-        Client c = service.getById(id);
-        c.setName(client.getName());
-        c.setSurname(client.getSurname());
-        c.setPhoneNumber(client.getPhoneNumber());
-        c.setPassword(client.getPassword());
-        c.setAddress(client.getAddress());
-
-        service.update(c);
-        return "redirect:/clients";
+    @GetMapping({"/clients/edit/{id}","/clients/new/{id}"})
+    public String showSave(@PathVariable Long id, Model model){
+        if(id != null && id != 0){
+            model.addAttribute("client", service.get(id));
+        }else{
+            model.addAttribute("client", new Client());
+        }
+        return "/clients/client-form";
     }
 
     @GetMapping("/clients/{id}")
-    public String deleteClient(@PathVariable long id){
+    public String delete(@PathVariable long id){
         service.delete(id);
         return "redirect:/clients";
     }

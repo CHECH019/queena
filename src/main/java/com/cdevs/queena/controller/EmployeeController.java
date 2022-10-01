@@ -9,54 +9,45 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.cdevs.queena.iServices.IEmployeeService;
 import com.cdevs.queena.model.Employee;
+import com.cdevs.queena.service.api.EmployeeServiceAPI;
 
 @Controller
 @RequestMapping
 public class EmployeeController {
     @Autowired
-    private IEmployeeService service;
+    private EmployeeServiceAPI service;
 
     @GetMapping("/employees")
     public String show(Model model){
-        model.addAttribute("employees", service.getList());
+        model.addAttribute("employees", service.getAll());
         return "/employees/employees";
     }
 
     @GetMapping("/employees/new")
-    public String createEmployee(Model model){
+    public String create(Model model){
         model.addAttribute("employee", new Employee());
         return "/employees/new-employee";
     }
 
     @PostMapping("/employees/save")
-    public String saveEmployee(@ModelAttribute("employee") Employee employee){
+    public String save(@ModelAttribute("employee") Employee employee){
         service.save(employee); 
         return "redirect:/employees";
     }
 
-    @GetMapping("/employees/edit/{id}")
-    public String editEmployee(@PathVariable long id, Model model){
-        model.addAttribute("employee", service.getById(id));
-        return "/employees/edit-employee";
-    }
-
-    @PostMapping("/employees/{id}")
-    public String updateEmployee(@PathVariable long id, @ModelAttribute("employee") Employee employee){
-        Employee e = service.getById(id);
-        e.setName(employee.getName());
-        e.setSurname(employee.getSurname());
-        e.setPhoneNumber(employee.getPhoneNumber());
-        e.setPassword(employee.getPassword());
-        e.setAddress(employee.getAddress());
-
-        service.update(e);
-        return "redirect:/employees";
+    @GetMapping({"/employees/edit/{id}","/employees/new/{id}"})
+    public String showSave(@PathVariable Long id, Model model){
+        if(id != null && id != 0){
+            model.addAttribute("employee", service.get(id));
+        }else{
+            model.addAttribute("employee", new Employee());
+        }
+        return "/employees/employee-form";
     }
 
     @GetMapping("/employees/{id}")
-    public String deleteEmployee(@PathVariable long id){
+    public String delete(@PathVariable long id){
         service.delete(id);
         return "redirect:/employees";
     }

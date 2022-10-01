@@ -1,4 +1,4 @@
-package com.cdevs.queena.repository;
+package com.cdevs.queena.dao;
 
 import java.util.List;
 
@@ -10,11 +10,12 @@ import org.springframework.stereotype.Repository;
 import com.cdevs.queena.model.Appointment;
 
 @Repository
-public interface AppointmentRepository extends CrudRepository<Appointment,Long>{
+public interface AppointmentDaoApi extends CrudRepository<Appointment,Long>{
     @Query(value="SELECT * FROM appointment WHERE employee_id = :employee_id",
     nativeQuery=true)
     List<Appointment> findByEmployeeId(@Param("employee_id") long id);
-    @Query(value="SELECT * FROM appointment WHERE client_id = :employee_id",
+
+    @Query(value="SELECT * FROM appointment WHERE client_id = :client_id",
     nativeQuery=true)
-    List<Appointment> findByClientId(@Param("employee_id") long id);
+    List<Appointment> findByClientId(@Param("client_id") long id);
 }

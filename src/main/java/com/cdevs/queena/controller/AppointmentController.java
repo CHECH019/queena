@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.cdevs.queena.iServices.IAppointmentService;
 import com.cdevs.queena.model.Appointment;
+import com.cdevs.queena.service.api.AppointmentServiceAPI;
 
 @Controller
 public class AppointmentController {
     @Autowired
-    private IAppointmentService service;
+    private AppointmentServiceAPI service;
 
     @GetMapping("/appointments")
     public String show(Model model){
-        model.addAttribute("appointments",service.getList());
+        model.addAttribute("appointments",service.getAll());
         return "appointments/appointments";
     }
     
@@ -34,33 +34,21 @@ public class AppointmentController {
         return "appointments/appointments";
     }
 
-    @GetMapping("/appointments/new")
-    public String createAppointment(Model model){
-        model.addAttribute("appointment", new Appointment());
-        return "appointments/new-appointment";
-    }
-
+    
     @PostMapping("/appointments/save")
-    public String saveAppointment(@ModelAttribute("appointment") Appointment appointment){
+    public String save(@ModelAttribute("appointment") Appointment appointment){
         service.save(appointment); 
         return "redirect:/appointments";
     }
 
-    @GetMapping("/appointments/edit/{id}")
-    public String editAppointment(@PathVariable long id, Model model){
-        model.addAttribute("appointment", service.getById(id));
-        return "appointments/edit-appointment";
-    }
-
-    @PostMapping("/appointments/{id}")
-    public String updateAppointment(@PathVariable long id, @ModelAttribute("appointment") Appointment appointment){
-        Appointment a = service.getById(id);
-        a.setEmployee(appointment.getEmployee());
-        a.setClient(appointment.getClient());
-        a.setLdt(appointment.getLdt());
-        a.setStatus(appointment.getStatus());
-        service.update(a);
-        return "redirect:/appointments";
+    @GetMapping({"/appointments/edit/{id}","/appointments/new/{id}"})
+    public String showSave(@PathVariable Long id, Model model){
+        if(id != null && id != 0){ 
+            model.addAttribute("appointment", service.get(id));
+        }else{
+            model.addAttribute("appointment", new Appointment());
+        }
+        return "appointments/appointment-form";
     }
 
     @GetMapping("/appointments/{id}")
