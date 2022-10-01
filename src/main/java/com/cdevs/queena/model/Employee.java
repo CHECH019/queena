@@ -11,6 +11,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "employee")
 public class Employee extends User {
@@ -19,6 +21,7 @@ public class Employee extends User {
     private long dni;
 
     @OneToMany(mappedBy = "employee")
+    @JsonIgnore
     private List<Appointment> appointments;
 
     @ManyToMany
