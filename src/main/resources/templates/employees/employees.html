@@ -70,6 +70,7 @@
                     <td>
                         <a th:href="@{/employees/edit/{id}(id=${employee.id})}" class="btn btn-warning" href="#">Edit</a>
                         <a th:href="@{/employees/{id}(id=${employee.id})}" class="btn btn-danger" href="#">Delete</a>
+                        <a th:href="@{/appointments/employee/{id}(id=${employee.id})}" class="btn btn-primary" href="#">Show Appointment</a>
                     </td>
                 </tr>
             </tbody>

@@ -1,4 +1,4 @@
-package com.cdevs.queena.controller.rest;
+package com.cdevs.queena.restController;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.cdevs.queena.commons.GenericServiceApi;
 
-abstract public class GenericRestController <T,ID extends Serializable>{
+public abstract class GenericRestController <T,ID extends Serializable>{
     protected static final String BASE_URL = "api/v1/";
 
     @GetMapping("/all")
