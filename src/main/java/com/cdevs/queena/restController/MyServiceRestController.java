@@ -1,4 +1,4 @@
-package com.cdevs.queena.controller.rest;
+package com.cdevs.queena.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -53,13 +53,17 @@
                 <form th:action="@{/appointments/save}" th:object="${appointment}" method="POST">
                     <input type="text" name="name" th:field="*{id}" class="form-control" hidden>
                     <div class="form-group">
-                        <label for="">ID CLIENTE</label>
-                        <input type="text" name="name" th:field="*{client.id}" class="form-control">
+                        <label for="">CLIENTE</label>
+                        <h3 th:text="*{client.name}"></h3>
+                        <input type="text" name="name" th:field="*{client.id}" class="form-control" hidden>
                     </div>
                     <br>
                     <div class="form-group">
                         <label for="">ID EMPLEADO</label>
-                        <input type="text" name="id" th:field="*{employee.id}" class="form-control">
+                        <select name="employee.id" id="employee.id" th:field="*{employee.id}">
+                            <option value="0" selected>select option</option>
+                            <option th:each="emp:${employees}" th:text="${emp.name}" th:value="${emp.id}"></option>
+                        </select>
                     </div>
                     <br>
                     <div class="form-group">

@@ -68,6 +68,8 @@
                     <td>
                         <a th:href="@{/clients/edit/{id}(id=${client.id})}" class="btn btn-warning" href="#">Edit</a>
                         <a th:href="@{/clients/{id}(id=${client.id})}" class="btn btn-danger" href="#">Delete</a>
+                        <a th:href="@{/appointments/new/client/{id}(id=${client.id})}" class="btn btn-primary " href="#">Book appointment</a>
+                        <a th:href="@{/appointments/client/{id}(id=${client.id})}" class="btn btn-secondary" href="#">Show appointments</a>
                     </td>
                 </tr>
             </tbody>

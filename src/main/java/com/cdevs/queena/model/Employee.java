@@ -30,6 +30,8 @@ public class Employee extends User {
         joinColumns = @JoinColumn(name = "employee_id"), 
         inverseJoinColumns = @JoinColumn(name = "service_id")
     )
+
+    @JsonIgnore
     private List<MyService> specializations;
 
     public long getDni() {

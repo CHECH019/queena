@@ -1,6 +1,12 @@
-package com.cdevs.queena.controller.rest;
+package com.cdevs.queena.restController;
+
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,4 +25,13 @@ public class EmployeeRestController extends GenericRestController<Employee,Long>
     public GenericServiceApi<Employee, Long> getService() {
         return service;
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Employee> login(@RequestBody Map<String, Object>employeeMap) {
+        String email = (String) employeeMap.get("email");
+        String pass = (String) employeeMap.get("password");
+        Employee c =service.validateEmployee(email, pass);
+        return new ResponseEntity<Employee>(c, HttpStatus.OK) ;
+    }
+    
 }
