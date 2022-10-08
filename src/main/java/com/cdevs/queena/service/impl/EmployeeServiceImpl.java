@@ -43,7 +43,6 @@ public class EmployeeServiceImpl extends GenericServiceImpl<Employee,Long> imple
 
     @Override
     public Employee save(Employee entity) {
-        System.out.println("!!!!"+entity.getId());
         if(!UserValidations.validateEmailPattern(entity.getEmail()))
             throw new QAuthException("Invalid email format");
         if(dao.getUserByEmail(entity.getEmail()) != null){
@@ -52,7 +51,9 @@ public class EmployeeServiceImpl extends GenericServiceImpl<Employee,Long> imple
         if(dao.getEmployeeByDni(entity.getDni())!= null){
             throw new QAuthException("DNI already in use");
         }
-        System.out.println(entity.getPassword());
+        if(entity.getSpecializations() == null){
+            throw new QAuthException("Debe ingresar los servicios que ofrece el empleado");
+        }
         String hashedPassword = BCrypt.hashpw(entity.getPassword(), BCrypt.gensalt(10));
         entity.setPassword(hashedPassword);
         return super.save(entity);
