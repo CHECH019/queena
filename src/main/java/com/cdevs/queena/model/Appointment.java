@@ -45,8 +45,8 @@ public class Appointment {
         joinColumns = @JoinColumn(name="appointment_id"),
         inverseJoinColumns = @JoinColumn(name = "service_id")
     )
-    private List<MyService> services;
 
+    private List<MyService> services;
     
     public Client getClient() {
         return client;
@@ -86,5 +86,13 @@ public class Appointment {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<MyService> getServices() {
+        return services;
+    }
+
+    public void setServices(List<MyService> services) {
+        this.services = services;
     }
 }

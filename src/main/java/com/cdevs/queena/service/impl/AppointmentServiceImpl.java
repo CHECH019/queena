@@ -8,10 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.cdevs.queena.commons.GenericServiceImpl;
 import com.cdevs.queena.dao.AppointmentDaoApi;
+import com.cdevs.queena.exceptions.QAuthException;
 import com.cdevs.queena.model.Appointment;
 import com.cdevs.queena.service.api.AppointmentServiceAPI;
-
-
 
 @Service
 public class AppointmentServiceImpl extends GenericServiceImpl<Appointment,Long> implements AppointmentServiceAPI{
@@ -31,6 +30,19 @@ public class AppointmentServiceImpl extends GenericServiceImpl<Appointment,Long>
     @Override
     public CrudRepository<Appointment, Long> getDAO() {
         return dao;
+    }
+
+    @Override
+    public Appointment save(Appointment entity) {
+        List<Appointment> list = getByEmployeeId(entity.getEmployee().getId());
+        if(entity.getServices() == null)
+            throw new QAuthException("Debe ingresar servicios");
+        for(Appointment a : list){
+            if(a.getLdt().equals(entity.getLdt())){
+                throw new QAuthException("HORARIO NO DISPONIBLE");
+            }
+        }
+        return super.save(entity);
     }
         
 }
