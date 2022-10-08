@@ -30,5 +30,6 @@ public abstract class GenericServiceImpl<T,ID extends Serializable> implements G
     public List<T> getAll() {
         return (List<T>) getDAO().findAll();
     }
+    
     public abstract CrudRepository<T,ID> getDAO();
 }
