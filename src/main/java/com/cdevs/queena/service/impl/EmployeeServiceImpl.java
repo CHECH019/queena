@@ -58,5 +58,4 @@ public class EmployeeServiceImpl extends GenericServiceImpl<Employee,Long> imple
         entity.setPassword(hashedPassword);
         return super.save(entity);
     }
-    
 }
