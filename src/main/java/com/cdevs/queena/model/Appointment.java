@@ -20,12 +20,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table (name = "appointment")
 public class Appointment {
+    public enum appointment_status{
+        pendiente,
+        agendada,
+        cancelada,
+        completada
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String status;
+    @Column(nullable = false, columnDefinition = "varchar(250) default pendiente")
+    private String status = "pendiente";
 
     @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")

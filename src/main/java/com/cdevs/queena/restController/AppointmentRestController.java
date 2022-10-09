@@ -1,38 +1,41 @@
 package com.cdevs.queena.restController;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cdevs.queena.commons.GenericRestController;
 import com.cdevs.queena.commons.GenericServiceApi;
 import com.cdevs.queena.model.Appointment;
 import com.cdevs.queena.service.api.AppointmentServiceAPI;
+import com.cdevs.queena.service.api.ClientServiceAPI;
+import com.cdevs.queena.constants.Constants;
 
 @RestController
-@RequestMapping(value = GenericRestController.BASE_URL + "appointment")
+@RequestMapping(value = Constants.BASE_URL + "appointment")
 public class AppointmentRestController extends GenericRestController<Appointment,Long>{
 
     @Autowired
     private AppointmentServiceAPI service;
+
+    @Autowired
+    private ClientServiceAPI clientService;
     
     @Override
     public GenericServiceApi<Appointment, Long> getService() {
         return service;
     }
-
-
-    @GetMapping("/all/client-{id}")
-    public List<Appointment> showByClientId(@PathVariable Long id, Model model){
-        return service.getByClientId(id);
-    }
     
-    @GetMapping("/all/employee-{id}")
-    public List<Appointment> showByEmployeeId(@PathVariable Long id, Model model){
-        return service.getByEmployeeId(id);
+    @PostMapping("/book")
+    public ResponseEntity<Appointment> saveAppointment(@RequestBody Appointment entity, HttpServletRequest request){
+        long id = (long) request.getAttribute("userID");
+        entity.setClient(clientService.get(id));
+        
+        return super.save(entity);
     }
 }
