@@ -21,7 +21,7 @@ import com.cdevs.queena.model.Client;
 import com.cdevs.queena.model.Employee;
 import com.cdevs.queena.model.User;
 import com.cdevs.queena.service.api.AppointmentServiceAPI;
-import com.cdevs.queena.service.api.UserServiceApi;
+import com.cdevs.queena.service.api.UserServiceAPI;
 import com.cdevs.queena.validations.UserValidations;
 
 @RestController
@@ -29,10 +29,10 @@ import com.cdevs.queena.validations.UserValidations;
 public class UserRestController {
     
     @Autowired
-    private UserServiceApi<Client> cliService;
+    private UserServiceAPI<Client> cliService;
 
     @Autowired
-    private UserServiceApi<Employee> empService;
+    private UserServiceAPI<Employee> empService;
 
     @Autowired
     private AppointmentServiceAPI apService;

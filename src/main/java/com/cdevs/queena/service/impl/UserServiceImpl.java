@@ -6,10 +6,10 @@ import com.cdevs.queena.commons.GenericServiceImpl;
 import com.cdevs.queena.dao.UserDao;
 import com.cdevs.queena.exceptions.QAuthException;
 import com.cdevs.queena.model.User;
-import com.cdevs.queena.service.api.UserServiceApi;
+import com.cdevs.queena.service.api.UserServiceAPI;
 import com.cdevs.queena.validations.UserValidations;
 
-public abstract class UserServiceImpl<T extends User> extends GenericServiceImpl<T,Long> implements UserServiceApi<T>{
+public abstract class UserServiceImpl<T extends User> extends GenericServiceImpl<T,Long> implements UserServiceAPI<T>{
 
     @Override
     public T getByEmail(String email) throws QAuthException {
