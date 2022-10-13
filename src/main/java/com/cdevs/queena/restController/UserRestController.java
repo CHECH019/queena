@@ -38,20 +38,21 @@ public class UserRestController {
     private AppointmentServiceAPI apService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String,String>> login(@RequestBody Map<String, Object>clientMap) {
-        String email = (String) clientMap.get("email");
-        String pass = (String) clientMap.get("password");
+    public ResponseEntity<Map<String,String>> login(@RequestBody Map<String, Object>userMap) {
+        String email = (String) userMap.get("email");
+        String pass = (String) userMap.get("password");
+        String role = (String) userMap.get("role");
         User c = null;
-        try {
+        if(role.equals("Client")) {
             c = cliService.validateUser(email, pass);   
-        } catch (Exception e) {
+        } else{
             c = empService.validateUser(email, pass);
         }
         return new ResponseEntity<Map<String,String>>(UserValidations.generateJWTToken(c), HttpStatus.OK) ;
     }
 
     @GetMapping("/my-appointments")
-    public List<Appointment> showByEmployeeId(HttpServletRequest request, Model model){
+    public List<Appointment> myAppts(HttpServletRequest request, Model model){
         long id = (long) request.getAttribute("userID");
         String role = (String) request.getAttribute("role");
 
