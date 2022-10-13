@@ -6,14 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
-import com.cdevs.queena.commons.GenericServiceImpl;
 import com.cdevs.queena.dao.AppointmentDaoApi;
 import com.cdevs.queena.exceptions.QAuthException;
+import com.cdevs.queena.generics.GenericServiceImpl;
 import com.cdevs.queena.model.Appointment;
 import com.cdevs.queena.service.api.AppointmentServiceAPI;
 
 @Service
 public class AppointmentServiceImpl extends GenericServiceImpl<Appointment,Long> implements AppointmentServiceAPI{
+    
     @Autowired
     private AppointmentDaoApi dao;
 

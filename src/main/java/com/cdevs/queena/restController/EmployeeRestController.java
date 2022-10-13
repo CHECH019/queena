@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cdevs.queena.commons.GenericRestController;
-import com.cdevs.queena.commons.GenericServiceApi;
 import com.cdevs.queena.constants.Constants;
+import com.cdevs.queena.generics.GenericRestController;
+import com.cdevs.queena.generics.GenericServiceApi;
 import com.cdevs.queena.model.Employee;
 import com.cdevs.queena.service.api.EmployeeServiceAPI;
 

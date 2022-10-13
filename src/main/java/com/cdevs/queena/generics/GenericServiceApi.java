@@ -1,4 +1,4 @@
-package com.cdevs.queena.commons;
+package com.cdevs.queena.generics;
 
 import java.io.Serializable;
 import java.util.List;

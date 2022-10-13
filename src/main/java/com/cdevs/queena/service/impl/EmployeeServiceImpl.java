@@ -11,6 +11,7 @@ import com.cdevs.queena.service.api.EmployeeServiceAPI;
 
 @Service
 public class EmployeeServiceImpl extends UserServiceImpl<Employee> implements EmployeeServiceAPI{
+    
     @Autowired
     private EmployeeDaoApi dao;
 

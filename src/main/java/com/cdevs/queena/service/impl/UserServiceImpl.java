@@ -2,9 +2,9 @@ package com.cdevs.queena.service.impl;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import com.cdevs.queena.commons.GenericServiceImpl;
 import com.cdevs.queena.dao.UserDao;
 import com.cdevs.queena.exceptions.QAuthException;
+import com.cdevs.queena.generics.GenericServiceImpl;
 import com.cdevs.queena.model.User;
 import com.cdevs.queena.service.api.UserServiceAPI;
 import com.cdevs.queena.validations.UserValidations;
@@ -24,7 +24,6 @@ public abstract class UserServiceImpl<T extends User> extends GenericServiceImpl
         return c;
     }
 
-    
     @Override
     public T save(T entity) {
         if(!UserValidations.validateEmailPattern(entity.getEmail()))

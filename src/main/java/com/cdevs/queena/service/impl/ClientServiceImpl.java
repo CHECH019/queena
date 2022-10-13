@@ -15,40 +15,10 @@ public class ClientServiceImpl extends UserServiceImpl<Client> implements Client
 
     @Autowired
     private ClientDaoApi dao;
+
     @Override
     public UserDao<Client> getDAO() {
-        // TODO Auto-generated method stub
         return dao;
     }
-
-    // @Override
-    // public CrudRepository<Client,Long> getDAO() {
-    //     return dao;
-    // }
-
-    // @Override
-    // public Client getByEmail(String email) {
-    //     return dao.getUserByEmail(email);
-    // }
-
-    // @Override
-    // public Client validateUser(String email, String password) throws QAuthException {
-    //     Client c = dao.getUserByEmail(email);
-    //     if(c == null || !BCrypt.checkpw(password, c.getPassword()))
-    //         throw new QAuthException("Invalid email/password") ;
-    //     return c;
-    // }
-
-    // @Override
-    // public Client save(Client entity) {
-    //     if(!UserValidations.validateEmailPattern(entity.getEmail()))
-    //         throw new QAuthException("Invalid email format");
-    //     if(dao.getUserByEmail(entity.getEmail()) != null){
-    //         throw new QAuthException("Email already in use");
-    //     }
-    //     String hashedPassword = BCrypt.hashpw(entity.getPassword(), BCrypt.gensalt(10));
-    //     entity.setPassword(hashedPassword);
-    //     return super.save(entity);
-    // }
     
 }
