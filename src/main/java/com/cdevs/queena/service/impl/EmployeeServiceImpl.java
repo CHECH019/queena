@@ -1,26 +1,18 @@
 package com.cdevs.queena.service.impl;
 
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
-import com.cdevs.queena.commons.GenericServiceImpl;
 import com.cdevs.queena.dao.EmployeeDaoApi;
+import com.cdevs.queena.dao.UserDao;
 import com.cdevs.queena.exceptions.QAuthException;
 import com.cdevs.queena.model.Employee;
 import com.cdevs.queena.service.api.EmployeeServiceAPI;
-import com.cdevs.queena.validations.UserValidations;
 
 @Service
-public class EmployeeServiceImpl extends GenericServiceImpl<Employee,Long> implements EmployeeServiceAPI{
+public class EmployeeServiceImpl extends UserServiceImpl<Employee> implements EmployeeServiceAPI{
     @Autowired
     private EmployeeDaoApi dao;
-
-    @Override
-    public CrudRepository<Employee, Long> getDAO() {
-        return dao;
-    }
 
     @Override
     public Employee getByDni(Long id) {
@@ -28,34 +20,18 @@ public class EmployeeServiceImpl extends GenericServiceImpl<Employee,Long> imple
     }
 
     @Override
-    public Employee getByEmail(String email) throws QAuthException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Employee validateEmployee(String email, String password) throws QAuthException {
-        Employee e = dao.getUserByEmail(email);
-        if(e == null || !BCrypt.checkpw(password, e.getPassword()))
-            throw new QAuthException("Invalid email/password") ;
-        return e;
-    }
-
-    @Override
     public Employee save(Employee entity) {
-        if(!UserValidations.validateEmailPattern(entity.getEmail()))
-            throw new QAuthException("Invalid email format");
-        if(dao.getUserByEmail(entity.getEmail()) != null){
-            throw new QAuthException("Email already in use");
-        }
         if(dao.getEmployeeByDni(entity.getDni())!= null){
-            throw new QAuthException("DNI already in use");
+            throw new QAuthException("DNI already in use!!");
         }
         if(entity.getSpecializations() == null){
             throw new QAuthException("Debe ingresar los servicios que ofrece el empleado");
         }
-        String hashedPassword = BCrypt.hashpw(entity.getPassword(), BCrypt.gensalt(10));
-        entity.setPassword(hashedPassword);
         return super.save(entity);
+    }
+
+    @Override
+    public UserDao<Employee> getDAO() {
+        return dao;
     }
 }

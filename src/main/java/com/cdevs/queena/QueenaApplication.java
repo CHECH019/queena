@@ -19,9 +19,8 @@ public class QueenaApplication {
         FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
         AuthFilter authFilter = new AuthFilter();
         registrationBean.setFilter(authFilter);
-        registrationBean.addUrlPatterns("/api/v1/client/my-appointments");
-        registrationBean.addUrlPatterns("/api/v1/employee/my-appointments");
-        registrationBean.addUrlPatterns("/api/v1/appointment/book");
+        registrationBean.addUrlPatterns("/api/v1/my-appointments");
+        registrationBean.addUrlPatterns("/api/v1/book");
         return registrationBean;
     }
 }

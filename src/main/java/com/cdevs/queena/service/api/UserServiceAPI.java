@@ -4,8 +4,7 @@ import com.cdevs.queena.commons.GenericServiceApi;
 import com.cdevs.queena.exceptions.QAuthException;
 import com.cdevs.queena.model.User;
 
-public interface UserServiceAPI extends GenericServiceApi<User,Long>{
-    public User getByEmail(String email) throws QAuthException;
-    public User validateUser(String email, String password) throws QAuthException;
-
+public interface UserServiceApi<T extends User> extends GenericServiceApi <T,Long>{
+    public T getByEmail(String email) throws QAuthException;
+    public T validateUser(String email, String password) throws QAuthException;
 }

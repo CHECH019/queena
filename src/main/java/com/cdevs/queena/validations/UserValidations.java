@@ -32,6 +32,7 @@ public class UserValidations {
             .claim("email", user.getEmail())
             .claim("name", user.getName())
             .claim("surname", user.getSurname())
+            .claim("role",user.getClass().getSimpleName())
             .compact();
         Map<String, String> map = new HashMap<String,String>();
         map.put("token", token);
