@@ -22,6 +22,7 @@ public class EmployeeServiceImpl extends UserServiceImpl<Employee> implements Em
 
     @Override
     public Employee save(Employee entity) {
+        entity.setUserRole("Employee");
         if(dao.getEmployeeByDni(entity.getDni())!= null){
             throw new QAuthException("DNI already in use!!");
         }

@@ -30,6 +30,9 @@ public class User {
 
     private String password;
 
+    @Column(columnDefinition = "varchar(30) not null default 'Client'")
+    private String userRole = "Client";
+
     
     public String getSurname() {
         return surname;
@@ -72,5 +75,11 @@ public class User {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public String getUserRole() {
+        return userRole;
+    }
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 }

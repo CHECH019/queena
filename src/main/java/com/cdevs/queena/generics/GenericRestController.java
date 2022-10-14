@@ -3,6 +3,8 @@ package com.cdevs.queena.generics;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -14,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 public abstract class GenericRestController <T,ID extends Serializable>{
 
     @GetMapping("/all")
-    public List<T> getAll(Model model){
-        return getService().getAll();
+    public ResponseEntity<List<T>> getAll(Model model, HttpServletRequest request){
+        String role = (String) request.getAttribute("role");
+        if(role.equals("Admin")){
+            return new ResponseEntity<>(getService().getAll(),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/save")
@@ -25,23 +31,35 @@ public abstract class GenericRestController <T,ID extends Serializable>{
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<T> get(@PathVariable ID id, Model model){
+    public ResponseEntity<T> get(@PathVariable ID id, Model model, HttpServletRequest request){
         T e = getService().get(id);
-        if(e != null)
-            getService().get(id);
-        else
-            return new ResponseEntity<T>(e,HttpStatus.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<T>(e,HttpStatus.OK);
+        if(e != null){
+            String role = (String) request.getAttribute("role");
+            if(role.equals("Admin")){
+                return new ResponseEntity<>(getService().get(id),HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+            }
+        }else{
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
     }
 
     @GetMapping("/delete/{id}")
-    public ResponseEntity<T> delete(@PathVariable ID id){
+    public ResponseEntity<T> delete(@PathVariable ID id, HttpServletRequest request){
         T e = getService().get(id);
-        if(e != null)
-            getService().delete(id);
-        else
-            return new ResponseEntity<T>(e,HttpStatus.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<T>(e,HttpStatus.OK);
+        if(e != null){
+            String role = (String) request.getAttribute("role");
+            if(role.equals("Admin")){
+                getService().delete(id);
+                return new ResponseEntity<>(e,HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+            }
+        }
+        else{
+            return new ResponseEntity<T>(e,HttpStatus.NO_CONTENT);
+        }
     }
     
     public abstract GenericServiceApi<T,ID> getService();

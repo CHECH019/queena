@@ -35,6 +35,7 @@ public class AppointmentServiceImpl extends GenericServiceImpl<Appointment,Long>
 
     @Override
     public Appointment save(Appointment entity) {
+        entity.setStatus("pendiente");
         List<Appointment> list = getByEmployeeId(entity.getEmployee().getId());
         if(entity.getServices() == null)
             throw new QAuthException("Debe ingresar servicios");
@@ -44,6 +45,5 @@ public class AppointmentServiceImpl extends GenericServiceImpl<Appointment,Long>
             }
         }
         return super.save(entity);
-    }
-        
+    }   
 }

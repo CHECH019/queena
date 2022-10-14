@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.cdevs.queena.model.Employee;
-import com.cdevs.queena.model.MyService;
 
 @Repository
 public interface EmployeeDaoApi extends UserDao<Employee> {
@@ -15,5 +14,5 @@ public interface EmployeeDaoApi extends UserDao<Employee> {
     public Employee getEmployeeByDni(@Param("dni") long dni);
 
     @Query(value="select count(e.name), e.name, s.name from employee e join employee_service es on e.id = es.employee_id join service s on es.service_id = s.id where es.service_id = 6 or es.service_id = 5 GROUP BY e.name having count(e.name) > 1", nativeQuery=true)
-    public List<Employee> getByServices(@Param("services") List<MyService> services);
+    public List<Employee> getByServices(@Param("services_id") List<Integer> services);
 }

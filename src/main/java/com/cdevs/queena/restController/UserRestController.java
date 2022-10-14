@@ -64,12 +64,12 @@ public class UserRestController {
     public ResponseEntity<Appointment> saveAppointment(@RequestBody Appointment a, HttpServletRequest request){
         if(request.getAttribute("role").equals("Client")){
             long id = (long) request.getAttribute("userID");
-            a.setClient(cliService.get(id));
-            apService.save(a);
-            return new ResponseEntity<Appointment>(a, HttpStatus.OK);
+            if(cliService.get(id) != null){
+                a.setClient(cliService.get(id));
+                apService.save(a);
+                return new ResponseEntity<Appointment>(a, HttpStatus.OK);
+            }
         }
-        else{
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }
