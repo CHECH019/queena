@@ -1,13 +1,18 @@
 package com.cdevs.queena.model;
 
-
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type",discriminatorType = DiscriminatorType.INTEGER)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +35,8 @@ public class User {
 
     private String password;
 
-    @Column(columnDefinition = "varchar(30) not null default 'Client'")
-    private String userRole = "Client";
-
+    @Column()
+    private String userRole;
     
     public String getSurname() {
         return surname;
@@ -82,4 +86,5 @@ public class User {
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
+    
 }

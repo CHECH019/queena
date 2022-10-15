@@ -4,20 +4,20 @@ package com.cdevs.queena.model;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "employee")
+@DiscriminatorValue("2")
 public class Employee extends User {
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private long dni;
 
     @OneToMany(mappedBy = "employee")

@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cdevs.queena.model.Appointment;
 import com.cdevs.queena.service.api.AppointmentServiceAPI;
-import com.cdevs.queena.constants.Constants;
 import com.cdevs.queena.generics.GenericRestController;
 import com.cdevs.queena.generics.GenericServiceApi;
+import com.cdevs.queena.global.Constants;
 
 @RestController
 @RequestMapping(value = Constants.BASE_URL + "appointment")

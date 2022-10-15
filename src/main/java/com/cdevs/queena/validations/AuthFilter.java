@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.GenericFilterBean;
 
-import com.cdevs.queena.constants.Constants;
+import com.cdevs.queena.global.Constants;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -35,7 +35,6 @@ public class AuthFilter extends GenericFilterBean{
                 try {
                     Claims claims = Jwts.parser().setSigningKey(Constants.API_SECRET_KEY).parseClaimsJws(token).getBody(); 
                     httpRequest.setAttribute("userID", Long.parseLong(claims.get("userID").toString()));
-                    System.out.println(String.valueOf(claims.get("role")));
                     httpRequest.setAttribute("role", String.valueOf(claims.get("role").toString()));
                 } catch (Exception e) {
                     httpResponse.sendError(HttpStatus.FORBIDDEN.value(), "invalid/expired token");

@@ -21,12 +21,11 @@ public class QueenaApplication {
         registrationBean.setFilter(authFilter);
         registrationBean.addUrlPatterns("/api/v1/my-appointments");
         registrationBean.addUrlPatterns("/api/v1/book");
-        registrationBean.addUrlPatterns("/api/v1/employee/all");
-        registrationBean.addUrlPatterns("/api/v1/employee/delete/*");
-        registrationBean.addUrlPatterns("/api/v1/client/all");
-        registrationBean.addUrlPatterns("/api/v1/client/delete/*");
-        registrationBean.addUrlPatterns("/api/v1/employee/find/*");
-        registrationBean.addUrlPatterns("/api/v1/client/find/*");
+        registrationBean.addUrlPatterns("/api/v1/delete/*");
+        registrationBean.addUrlPatterns("/api/v1/all-clients");
+        registrationBean.addUrlPatterns("/api/v1/all-employees");
+        registrationBean.addUrlPatterns("/api/v1/all");
+        registrationBean.addUrlPatterns("/api/v1/find/*");
 
         return registrationBean;
     }

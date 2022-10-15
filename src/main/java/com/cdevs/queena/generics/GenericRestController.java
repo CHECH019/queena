@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.cdevs.queena.global.Constants;
+
 public abstract class GenericRestController <T,ID extends Serializable>{
 
     @GetMapping("/all")
     public ResponseEntity<List<T>> getAll(Model model, HttpServletRequest request){
         String role = (String) request.getAttribute("role");
-        if(role.equals("Admin")){
+        if(role.equals(Constants.ROLE_ADMIN)){
             return new ResponseEntity<>(getService().getAll(),HttpStatus.OK);
         }
         return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
@@ -32,10 +34,12 @@ public abstract class GenericRestController <T,ID extends Serializable>{
 
     @GetMapping("/find/{id}")
     public ResponseEntity<T> get(@PathVariable ID id, Model model, HttpServletRequest request){
+        System.out.println(id);
         T e = getService().get(id);
+        System.out.println(e);
         if(e != null){
             String role = (String) request.getAttribute("role");
-            if(role.equals("Admin")){
+            if(role.equals(Constants.ROLE_ADMIN)){
                 return new ResponseEntity<>(getService().get(id),HttpStatus.OK);
             }else{
                 return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
@@ -50,7 +54,7 @@ public abstract class GenericRestController <T,ID extends Serializable>{
         T e = getService().get(id);
         if(e != null){
             String role = (String) request.getAttribute("role");
-            if(role.equals("Admin")){
+            if(role.equals(Constants.ROLE_ADMIN)){
                 getService().delete(id);
                 return new ResponseEntity<>(e,HttpStatus.OK);
             }else{

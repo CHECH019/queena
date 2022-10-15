@@ -1,6 +1,10 @@
 package com.cdevs.queena.service.impl;
 
+import java.util.List;
+
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cdevs.queena.dao.UserDao;
 import com.cdevs.queena.exceptions.QAuthException;
@@ -9,23 +13,28 @@ import com.cdevs.queena.model.User;
 import com.cdevs.queena.service.api.UserServiceAPI;
 import com.cdevs.queena.validations.UserValidations;
 
-public abstract class UserServiceImpl<T extends User> extends GenericServiceImpl<T,Long> implements UserServiceAPI<T>{
+
+@Service
+public class UserServiceImpl extends GenericServiceImpl<User,Long> implements UserServiceAPI{
+
+    @Autowired
+    private UserDao dao;
 
     @Override
-    public T getByEmail(String email) throws QAuthException {
-        return getDAO().getUserByEmail(email);
+    public User getByEmail(String email) throws QAuthException {
+        return dao.getUserByEmail(email);
     }
 
     @Override
-    public T validateUser(String email, String password) throws QAuthException {
-        T c = getDAO().getUserByEmail(email);
+    public User validateUser(String email, String password) throws QAuthException {
+        User c = dao.getUserByEmail(email);
         if(c == null || !BCrypt.checkpw(password, c.getPassword()))
             throw new QAuthException("Invalid email/password") ;
         return c;
     }
 
     @Override
-    public T save(T entity) {
+    public User save(User entity) {
         if(!UserValidations.validateEmailPattern(entity.getEmail()))
             throw new QAuthException("Invalid email format");
         if(getDAO().getUserByEmail(entity.getEmail()) != null){
@@ -36,6 +45,12 @@ public abstract class UserServiceImpl<T extends User> extends GenericServiceImpl
         return super.save(entity);
     }
     
-    public abstract UserDao<T> getDAO() ;
+    public List<User> getByRole(String role){
+        return dao.getUserByRole(role);
+    }
+
+    public UserDao getDAO() {
+        return dao;
+    }
     
 }

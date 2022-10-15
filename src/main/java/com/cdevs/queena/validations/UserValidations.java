@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.cdevs.queena.constants.Constants;
+import com.cdevs.queena.global.Constants;
 import com.cdevs.queena.model.User;
 
 import io.jsonwebtoken.Jwts;

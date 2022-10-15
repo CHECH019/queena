@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cdevs.queena.constants.Constants;
+import com.cdevs.queena.generics.GenericRestController;
+import com.cdevs.queena.generics.GenericServiceApi;
+import com.cdevs.queena.global.Constants;
 import com.cdevs.queena.model.Appointment;
 import com.cdevs.queena.model.Client;
 import com.cdevs.queena.model.Employee;
@@ -26,13 +28,10 @@ import com.cdevs.queena.validations.UserValidations;
 
 @RestController
 @RequestMapping(value = Constants.BASE_URL)
-public class UserRestController {
+public class UserRestController extends GenericRestController<User,Long>{
     
     @Autowired
-    private UserServiceAPI<Client> cliService;
-
-    @Autowired
-    private UserServiceAPI<Employee> empService;
+    private UserServiceAPI userService;
 
     @Autowired
     private AppointmentServiceAPI apService;
@@ -41,13 +40,7 @@ public class UserRestController {
     public ResponseEntity<Map<String,String>> login(@RequestBody Map<String, Object>userMap) {
         String email = (String) userMap.get("email");
         String pass = (String) userMap.get("password");
-        String role = (String) userMap.get("role");
-        User c = null;
-        if(role.equals("Client")) {
-            c = cliService.validateUser(email, pass);   
-        } else{
-            c = empService.validateUser(email, pass);
-        }
+        User c = userService.validateUser(email, pass);   
         return new ResponseEntity<Map<String,String>>(UserValidations.generateJWTToken(c), HttpStatus.OK) ;
     }
 
@@ -56,20 +49,55 @@ public class UserRestController {
         long id = (long) request.getAttribute("userID");
         String role = (String) request.getAttribute("role");
 
-        return role.equals("Employee") ? 
+        return role.equals(Constants.ROLE_EMPLOYEE) ? 
                 apService.getByEmployeeId(id) : apService.getByClientId(id);
     }
 
     @PostMapping("/book")
     public ResponseEntity<Appointment> saveAppointment(@RequestBody Appointment a, HttpServletRequest request){
-        if(request.getAttribute("role").equals("Client")){
+        if(request.getAttribute("role").equals(Constants.ROLE_CLIENT)){
             long id = (long) request.getAttribute("userID");
-            if(cliService.get(id) != null){
-                a.setClient(cliService.get(id));
+            if(userService.get(id) != null){
+                a.setClient((Client) userService.get(id));
                 apService.save(a);
                 return new ResponseEntity<Appointment>(a, HttpStatus.OK);
             }
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("save/client")
+    public ResponseEntity<Client> save(@RequestBody Client entity){
+        entity.setUserRole(Constants.ROLE_CLIENT);
+        Client e = (Client) userService.save(entity); 
+        return new ResponseEntity<>(e, HttpStatus.OK);
+    }
+
+    @PostMapping("save/employee")
+    public ResponseEntity<Employee> saveEmp(@RequestBody Employee entity){
+        entity.setUserRole(Constants.ROLE_EMPLOYEE);
+        Employee e = (Employee) userService.save(entity); 
+        return new ResponseEntity<>(e, HttpStatus.OK);
+    }
+    @GetMapping("/all-clients")
+    public ResponseEntity<List<User>> getAllClients(Model model, HttpServletRequest request){
+        String role = (String) request.getAttribute("role");
+        if(role.equals(Constants.ROLE_ADMIN)){
+            return new ResponseEntity<>(userService.getByRole("Client"),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+    }
+    @GetMapping("/all-employees")
+    public ResponseEntity<List<User>> getAllEmp(Model model, HttpServletRequest request){
+        String role = (String) request.getAttribute("role");
+        if(role.equals(Constants.ROLE_ADMIN)){
+            return new ResponseEntity<>(userService.getByRole("Employee"),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+    }
+
+    @Override
+    public GenericServiceApi<User, Long> getService() {
+        return userService;
     }
 }
