@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.cdevs.queena.dao.UserDao;
 import com.cdevs.queena.exceptions.QAuthException;
 import com.cdevs.queena.generics.GenericServiceImpl;
+import com.cdevs.queena.global.Constants;
+import com.cdevs.queena.model.Employee;
 import com.cdevs.queena.model.User;
 import com.cdevs.queena.service.api.UserServiceAPI;
 import com.cdevs.queena.validations.UserValidations;
@@ -35,11 +37,23 @@ public class UserServiceImpl extends GenericServiceImpl<User,Long> implements Us
 
     @Override
     public User save(User entity) {
-        if(!UserValidations.validateEmailPattern(entity.getEmail()))
-            throw new QAuthException("Invalid email format");
-        if(getDAO().getUserByEmail(entity.getEmail()) != null){
+       
+        if(dao.getUserByEmail(entity.getEmail()) != null){
             throw new QAuthException("Email already in use");
         }
+        if(!UserValidations.validateEmailPattern(entity.getEmail()))
+            throw new QAuthException("Invalid email format");
+        if(entity.getUserRole() == Constants.ROLE_EMPLOYEE){
+            Employee e =(Employee) entity;
+            Long dni = e.getDni();
+            if(dni != null && dao.getUserByDNI(dni) != null){
+                throw new QAuthException("DNI already in use");
+            }
+            if(e.getSpecializations() == null){
+                throw new QAuthException("Employee specializations must be provided");
+            }
+        }
+       
         String hashedPassword = BCrypt.hashpw(entity.getPassword(), BCrypt.gensalt(10));
         entity.setPassword(hashedPassword);
         return super.save(entity);

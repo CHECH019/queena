@@ -1,5 +1,6 @@
 package com.cdevs.queena.restController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +22,10 @@ import com.cdevs.queena.global.Constants;
 import com.cdevs.queena.model.Appointment;
 import com.cdevs.queena.model.Client;
 import com.cdevs.queena.model.Employee;
+import com.cdevs.queena.model.MyService;
 import com.cdevs.queena.model.User;
 import com.cdevs.queena.service.api.AppointmentServiceAPI;
+import com.cdevs.queena.service.api.MyServiceServiceAPI;
 import com.cdevs.queena.service.api.UserServiceAPI;
 import com.cdevs.queena.validations.UserValidations;
 
@@ -35,6 +38,9 @@ public class UserRestController extends GenericRestController<User,Long>{
 
     @Autowired
     private AppointmentServiceAPI apService;
+
+    @Autowired
+    private MyServiceServiceAPI myServService;
 
     @PostMapping("/login")
     public ResponseEntity<Map<String,String>> login(@RequestBody Map<String, Object>userMap) {
@@ -55,15 +61,28 @@ public class UserRestController extends GenericRestController<User,Long>{
 
     @PostMapping("/book")
     public ResponseEntity<Appointment> saveAppointment(@RequestBody Appointment a, HttpServletRequest request){
-        if(request.getAttribute("role").equals(Constants.ROLE_CLIENT)){
-            long id = (long) request.getAttribute("userID");
-            if(userService.get(id) != null){
-                a.setClient((Client) userService.get(id));
-                apService.save(a);
-                return new ResponseEntity<Appointment>(a, HttpStatus.OK);
-            }
+        if(!request.getAttribute("role").equals(Constants.ROLE_CLIENT)){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        if(a.getEmployee() == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        User employee = userService.get(a.getEmployee().getId());
+        if(employee != null && !employee.getUserRole().equals(Constants.ROLE_EMPLOYEE)){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        long id = (long) request.getAttribute("userID");
+        User client = userService.get(id);
+        List<MyService> myServices = new ArrayList<>();
+        a.getServices().forEach(serv -> myServices.add(myServService.get(serv.getId())));
+        a.setClient((Client) client);
+        a.setEmployee((Employee) employee);
+        a.setServices(myServices);
+        apService.save(a);
+        return new ResponseEntity<Appointment>(a, HttpStatus.OK);    
+        
     }
 
     @PostMapping("save/client")

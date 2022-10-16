@@ -17,4 +17,7 @@ public interface UserDao extends CrudRepository<User,Long>{
 
     @Query("SELECT u FROM User u WHERE u.userRole = :role")
     public List<User> getUserByRole(@Param("role") String role);
+
+    @Query("SELECT u FROM User u WHERE u.dni = :dni")
+    public User getUserByDNI(@Param("dni") long dni);
 }

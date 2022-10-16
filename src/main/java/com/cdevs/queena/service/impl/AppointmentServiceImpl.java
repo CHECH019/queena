@@ -35,15 +35,32 @@ public class AppointmentServiceImpl extends GenericServiceImpl<Appointment,Long>
 
     @Override
     public Appointment save(Appointment entity) {
-        entity.setStatus("pendiente");
-        List<Appointment> list = getByEmployeeId(entity.getEmployee().getId());
-        if(entity.getServices() == null)
-            throw new QAuthException("Debe ingresar servicios");
-        for(Appointment a : list){
+        if(entity.getClient() == null){
+            throw new QAuthException("Invalid client id");
+        }
+        if(entity.getEmployee() == null){
+            throw new QAuthException("Invalid Employee id");
+        }
+        if(entity.getServices().contains(null)){
+            throw new QAuthException("Some Invalid Service id");
+        }
+        if(entity.getServices() == null){
+            throw new QAuthException("Appointment's services not provided");
+        }
+
+        List<Appointment> clientAps = getByClientId(entity.getClient().getId());
+        clientAps.forEach(a ->{
             if(a.getLdt().equals(entity.getLdt())){
-                throw new QAuthException("HORARIO NO DISPONIBLE");
+                throw new QAuthException("You already have an appointment at "+entity.getLdt().toString());
+            }
+        });
+        List<Appointment> employeeAps = getByEmployeeId(entity.getEmployee().getId());
+        for(Appointment a : employeeAps){
+            if(a.getLdt().equals(entity.getLdt())){
+                throw new QAuthException("Employee not available at "+entity.getLdt().toString());
             }
         }
+        entity.setStatus("pendiente");
         return super.save(entity);
     }   
 }
