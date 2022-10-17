@@ -1,5 +1,6 @@
 package com.cdevs.queena.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -11,6 +12,7 @@ import com.cdevs.queena.exceptions.QAuthException;
 import com.cdevs.queena.generics.GenericServiceImpl;
 import com.cdevs.queena.global.Constants;
 import com.cdevs.queena.model.Employee;
+import com.cdevs.queena.model.MyService;
 import com.cdevs.queena.model.User;
 import com.cdevs.queena.service.api.UserServiceAPI;
 import com.cdevs.queena.validations.UserValidations;
@@ -58,7 +60,11 @@ public class UserServiceImpl extends GenericServiceImpl<User,Long> implements Us
         entity.setPassword(hashedPassword);
         return super.save(entity);
     }
-    
+    public List<User> getbyServicesList(List<MyService> services){
+        List <Integer> servicesID = new ArrayList<>();
+        services.forEach(serv -> servicesID.add(serv.getId() ));
+        return dao.findUserByServicesList(servicesID, servicesID.size());
+    }
     public List<User> getByRole(String role){
         return dao.getUserByRole(role);
     }
@@ -66,5 +72,5 @@ public class UserServiceImpl extends GenericServiceImpl<User,Long> implements Us
     public UserDao getDAO() {
         return dao;
     }
-    
+
 }

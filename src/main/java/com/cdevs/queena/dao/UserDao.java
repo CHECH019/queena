@@ -12,12 +12,15 @@ import com.cdevs.queena.model.User;
 
 @Repository
 public interface UserDao extends CrudRepository<User,Long>{
-    @Query("SELECT u FROM User u WHERE u.email = :email")
+    @Query("SELECT u FROM User u WHERE u.email = ?1")
     public User getUserByEmail(@Param("email") String email);
 
-    @Query("SELECT u FROM User u WHERE u.userRole = :role")
-    public List<User> getUserByRole(@Param("role") String role);
+    @Query("SELECT u FROM User u WHERE u.userRole = ?1")
+    public List<User> getUserByRole(String role);
 
-    @Query("SELECT u FROM User u WHERE u.dni = :dni")
-    public User getUserByDNI(@Param("dni") long dni);
+    @Query("SELECT u FROM User u WHERE u.dni = ?1")
+    public User getUserByDNI(long dni);
+
+    @Query(value ="SELECT * FROM User u JOIN employee_service e ON u.id = e.employee_id WHERE e.service_id IN (:services) GROUP BY(u.id) HAVING COUNT(u.id) >= :size", nativeQuery = true)
+    public List<User> findUserByServicesList(@Param("services") List<Integer> services, @Param("size") int size);
 }

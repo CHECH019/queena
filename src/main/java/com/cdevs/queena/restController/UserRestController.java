@@ -115,6 +115,12 @@ public class UserRestController extends GenericRestController<User,Long>{
         return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
     }
 
+    @GetMapping("/employees-by-services")
+    public ResponseEntity<List<User>> getByServices(@RequestBody List<MyService> services){
+        System.out.println("!");
+        services.forEach(serv -> System.out.println(serv.getId()));
+        return new ResponseEntity<>(userService.getbyServicesList(services),HttpStatus.OK);
+    }
     @Override
     public GenericServiceApi<User, Long> getService() {
         return userService;
