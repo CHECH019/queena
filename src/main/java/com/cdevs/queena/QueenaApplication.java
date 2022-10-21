@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.cdevs.queena.validations.AuthFilter;
 
@@ -12,7 +14,7 @@ public class QueenaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(QueenaApplication.class, args);
-	} 
+	}
     
     @Bean
     public FilterRegistrationBean<AuthFilter> filterRegistrationBean(){
@@ -29,4 +31,26 @@ public class QueenaApplication {
 
         return registrationBean;
     }
+    @Bean
+    public WebMvcConfigurer corsConfigurer(){
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                // TODO Auto-generated method stub
+                registry.addMapping("/api/v1/*").allowedOrigins("*");
+			}
+        };
+    }
+    // @Bean
+    // public FilterRegistrationBean<CorsFilter> corsFilter(){
+    //     FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>();
+    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    //     CorsConfiguration config = new CorsConfiguration();
+    //     config.addAllowedOrigin("*");
+    //     config.addAllowedHeader("*");
+    //     source.registerCorsConfiguration("/**", config);
+    //     registrationBean.setFilter(new CorsFilter(source));
+    //     registrationBean.setOrder(0);
+    //     return registrationBean;   
+    // }
 }
