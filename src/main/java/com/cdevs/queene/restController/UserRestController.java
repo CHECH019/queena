@@ -42,6 +42,11 @@ public class UserRestController extends GenericRestController<User,Long>{
     @Autowired
     private MyServiceServiceAPI myServService;
 
+    @RequestMapping("/")
+    public String queene(){
+        return "Welcome to Queene!";
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Map<String,String>> login(@RequestBody Map<String, Object>userMap) {
         String email = (String) userMap.get("email");
