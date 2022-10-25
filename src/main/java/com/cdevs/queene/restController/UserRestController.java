@@ -117,7 +117,6 @@ public class UserRestController extends GenericRestController<User,Long>{
 
     @GetMapping("/employees-by-services")
     public ResponseEntity<List<User>> getByServices(@RequestBody List<MyService> services){
-        System.out.println("!");
         services.forEach(serv -> System.out.println(serv.getId()));
         return new ResponseEntity<>(userService.getbyServicesList(services),HttpStatus.OK);
     }
