@@ -6,7 +6,7 @@ public class Constants {
 
     public static final long TOKEN_VALIDITY = 2*60*60*1000;
 
-    public static final String BASE_URL = "api/v1/";
+    public static final String BASE_URL = "";
 
     public static final String ROLE_ADMIN = "Admin";
 

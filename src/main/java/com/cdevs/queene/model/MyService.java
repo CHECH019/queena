@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table (name = "service")
 public class MyService {
@@ -23,11 +25,19 @@ public class MyService {
     
     private double price;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "services", fetch = FetchType.LAZY)
     List <Appointment> appointments;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "specializations", fetch = FetchType.LAZY)
     List<Employee> employee_providers;
+
+    @Column(columnDefinition = "varchar(255) default null")
+    private String category;
+
+    @Column(columnDefinition = "text default null")
+    private String description;
 
     public int getId() {
         return id;
@@ -47,4 +57,29 @@ public class MyService {
     public void setPrice(double price) {
         this.price = price;
     }
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+    public List<Employee> getEmployee_providers() {
+        return employee_providers;
+    }
+    public void setEmployee_providers(List<Employee> employee_providers) {
+        this.employee_providers = employee_providers;
+    }
+    public String getCategory() {
+        return category;
+    }
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String desc) {
+        this.description = desc;
+    }
+    
 }
