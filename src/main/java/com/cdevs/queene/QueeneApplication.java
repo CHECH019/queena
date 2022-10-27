@@ -38,6 +38,8 @@ public class QueeneApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping(Constants.BASE_URL+"/*").allowedOrigins("*");
+                
+                registry.addMapping(Constants.BASE_URL+"/service/*").allowedOrigins("*");
 			}
         };
     }
