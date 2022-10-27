@@ -18,12 +18,8 @@ import com.cdevs.queene.global.Constants;
 public abstract class GenericRestController <T,ID extends Serializable>{
 
     @GetMapping("/all")
-    public ResponseEntity<List<T>> getAll(Model model, HttpServletRequest request){
-        String role = (String) request.getAttribute("role");
-        if(role.equals(Constants.ROLE_ADMIN)){
-            return new ResponseEntity<>(getService().getAll(),HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+    public ResponseEntity<List<T>> getAll(){
+        return new ResponseEntity<>(getService().getAll(),HttpStatus.OK);
     }
 
     @PostMapping("/save")
