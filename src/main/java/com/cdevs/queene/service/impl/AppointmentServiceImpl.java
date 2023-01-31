@@ -7,8 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import com.cdevs.queene.dao.AppointmentDaoApi;
-import com.cdevs.queene.exceptions.QAuthException;
-import com.cdevs.queene.generics.GenericServiceImpl;
 import com.cdevs.queene.model.Appointment;
 import com.cdevs.queene.service.api.AppointmentServiceAPI;
 
@@ -20,12 +18,12 @@ public class AppointmentServiceImpl extends GenericServiceImpl<Appointment,Long>
 
     @Override
     public List<Appointment> getByEmployeeId(long id){
-        return (List<Appointment>) dao.findByEmployeeId(id);
+        return null;
     }
     
     @Override
     public List<Appointment> getByClientId(long id){
-        return (List<Appointment>) dao.findByClientId(id);
+        return null;
     }
 
     @Override
@@ -36,28 +34,28 @@ public class AppointmentServiceImpl extends GenericServiceImpl<Appointment,Long>
     @Override
     public Appointment save(Appointment entity) {
         if(entity.getClient() == null){
-            throw new QAuthException("Invalid client id");
+            // throw new QAuthException("Invalid client id");
         }
         if(entity.getEmployee() == null){
-            throw new QAuthException("Invalid Employee id");
+            // throw new QAuthException("Invalid Employee id");
         }
         if(entity.getServices().contains(null)){
-            throw new QAuthException("Some Invalid Service id");
+            // throw new QAuthException("Some Invalid Service id");
         }
         if(entity.getServices() == null){
-            throw new QAuthException("Appointment's services not provided");
+            // throw new QAuthException("Appointment's services not provided");
         }
 
         List<Appointment> clientAps = getByClientId(entity.getClient().getId());
         clientAps.forEach(a ->{
             if(a.getLdt().equals(entity.getLdt())){
-                throw new QAuthException("You already have an appointment at "+entity.getLdt().toString());
+                // throw new QAuthException("You already have an appointment at "+entity.getLdt().toString());
             }
         });
         List<Appointment> employeeAps = getByEmployeeId(entity.getEmployee().getId());
         for(Appointment a : employeeAps){
             if(a.getLdt().equals(entity.getLdt())){
-                throw new QAuthException("Employee not available at "+entity.getLdt().toString());
+                // throw new QAuthException("Employee not available at "+entity.getLdt().toString());
             }
         }
         entity.setStatus("pendiente");

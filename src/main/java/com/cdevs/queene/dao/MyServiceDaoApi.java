@@ -1,11 +1,9 @@
 package com.cdevs.queene.dao;
 
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
-import com.cdevs.queene.model.MyService;
+import com.cdevs.queene.model.QService;
 
-@Repository
-public interface MyServiceDaoApi extends CrudRepository<MyService,Integer>{
+public interface MyServiceDaoApi extends CrudRepository<QService,Integer>{
     
 }
