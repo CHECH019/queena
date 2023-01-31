@@ -9,7 +9,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.cdevs.queene.config.Constants;
+import com.cdevs.queene.security.jwt.JwtAuthenticationFilter;
+import com.cdevs.queene.utils.global.Constants;
 
 import lombok.RequiredArgsConstructor;
 
