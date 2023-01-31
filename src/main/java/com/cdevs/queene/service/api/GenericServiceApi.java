@@ -1,4 +1,4 @@
-package com.cdevs.queene.generics;
+package com.cdevs.queene.service.api;
 
 import java.io.Serializable;
 import java.util.List;

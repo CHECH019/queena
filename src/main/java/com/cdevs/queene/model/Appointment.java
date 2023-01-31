@@ -3,17 +3,17 @@ package com.cdevs.queene.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -46,7 +46,7 @@ public class Appointment {
         joinColumns = @JoinColumn(name="appointment_id"),
         inverseJoinColumns = @JoinColumn(name = "service_id")
     )
-    private List<MyService> services;
+    private List<QService> services;
     
     public Client getClient() {
         return client;
@@ -88,11 +88,11 @@ public class Appointment {
         this.id = id;
     }
 
-    public List<MyService> getServices() {
+    public List<QService> getServices() {
         return services;
     }
 
-    public void setServices(List<MyService> services) {
+    public void setServices(List<QService> services) {
         this.services = services;
     }
 }

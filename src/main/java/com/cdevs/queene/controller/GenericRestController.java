@@ -1,9 +1,9 @@
-package com.cdevs.queene.generics;
+package com.cdevs.queene.controller;
 
 import java.io.Serializable;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.cdevs.queene.global.Constants;
+import com.cdevs.queene.model.Role;
+import com.cdevs.queene.service.api.GenericServiceApi;
 
 public abstract class GenericRestController <T,ID extends Serializable>{
 
@@ -35,7 +36,7 @@ public abstract class GenericRestController <T,ID extends Serializable>{
         System.out.println(e);
         if(e != null){
             String role = (String) request.getAttribute("role");
-            if(role.equals(Constants.ROLE_ADMIN)){
+            if(role.equals(Role.ADMIN.name())){
                 return new ResponseEntity<>(getService().get(id),HttpStatus.OK);
             }else{
                 return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
@@ -50,7 +51,7 @@ public abstract class GenericRestController <T,ID extends Serializable>{
         T e = getService().get(id);
         if(e != null){
             String role = (String) request.getAttribute("role");
-            if(role.equals(Constants.ROLE_ADMIN)){
+            if(role.equals(Role.ADMIN.name())){
                 getService().delete(id);
                 return new ResponseEntity<>(e,HttpStatus.OK);
             }else{

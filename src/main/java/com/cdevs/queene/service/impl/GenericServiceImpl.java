@@ -1,4 +1,4 @@
-package com.cdevs.queene.generics;
+package com.cdevs.queene.service.impl;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
+
+import com.cdevs.queene.service.api.GenericServiceApi;
 
 @Service
 public abstract class GenericServiceImpl<T,ID extends Serializable> implements GenericServiceApi<T,ID> {
