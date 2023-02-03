@@ -15,5 +15,11 @@ public class QServiceService extends GenericServiceImpl<QService,Integer> implem
     public CrudRepository<QService, Integer> getDAO() {
         return dao;
     }
+
+    @Override
+    public QService update(QService update) {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
 }

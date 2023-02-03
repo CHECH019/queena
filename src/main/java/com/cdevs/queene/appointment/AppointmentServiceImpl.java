@@ -58,5 +58,12 @@ public class AppointmentServiceImpl extends GenericServiceImpl<Appointment,Long>
         }
         entity.setStatus("pendiente");
         return super.save(entity);
-    }   
+    }
+
+    @Override
+    public Appointment update(Appointment update) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
 }

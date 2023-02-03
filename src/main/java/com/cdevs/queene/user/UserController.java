@@ -1,6 +1,6 @@
 package com.cdevs.queene.user;
 
-import org.springframework.http.HttpStatus; 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cdevs.queene.auth.AuthenticationRequest;
-import com.cdevs.queene.auth.AuthenticationResponse;
-import com.cdevs.queene.auth.RegisterRequest;
+import com.cdevs.queene.requestentity.AuthenticationRequest;
+import com.cdevs.queene.requestentity.RegisterRequest;
+import com.cdevs.queene.responseentity.APIResponse;
 import com.cdevs.queene.utils.global.Constants;
-import com.cdevs.queene.utils.global.ResponseStatus;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -31,31 +30,20 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(
+    public ResponseEntity<APIResponse> login(
         @RequestBody AuthenticationRequest request
     ) {            
-        AuthenticationResponse response = service.authenticate(request);
-        if(response.getStatus().equals(ResponseStatus.FAILED)){
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(response);
-        }
+        APIResponse response = service.authenticate(request);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthenticationResponse> signup(
+    public ResponseEntity<APIResponse> signup(
         @RequestBody RegisterRequest req
     ){
-        AuthenticationResponse response = service.register(req);
-        if(response.getStatus().equals(ResponseStatus.FAILED)){
-            return ResponseEntity
-                    .badRequest()
-                    .body(response);
-        }
-
-        return ResponseEntity.
-                status(HttpStatus.CREATED)
+        APIResponse response = service.register(req);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
                 .body(response);
     }
 

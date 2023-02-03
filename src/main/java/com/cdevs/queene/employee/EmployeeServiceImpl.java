@@ -17,6 +17,12 @@ public class EmployeeServiceImpl extends GenericServiceImpl<Employee,Long> imple
         return dao;
     }
 
+    @Override
+    public Employee update(Employee update) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     
     
 }

@@ -19,11 +19,11 @@ import com.cdevs.queene.utils.global.Constants;
 @Configuration
 public class ApplicationConfig {
     @Autowired
-    private UserDao userAccountDao;
+    private UserDao userDao;
 
     @Bean
     UserDetailsService userDetailsService(){
-        return username -> userAccountDao.findByEmail(username).orElse(null);
+        return username -> userDao.findByEmail(username).orElseThrow();
     }
 
     @Bean

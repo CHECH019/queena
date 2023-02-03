@@ -1,4 +1,4 @@
-package com.cdevs.queene.auth;
+package com.cdevs.queene.requestentity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

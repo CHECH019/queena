@@ -1,11 +1,9 @@
 package com.cdevs.queene.user;
 
-import java.util.Optional;
-
-import com.cdevs.queene.auth.AuthenticationRequest;
-import com.cdevs.queene.auth.AuthenticationResponse;
-import com.cdevs.queene.auth.RegisterRequest;
 import com.cdevs.queene.generics.GenericService;
+import com.cdevs.queene.requestentity.AuthenticationRequest;
+import com.cdevs.queene.requestentity.RegisterRequest;
+import com.cdevs.queene.responseentity.APIResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -16,8 +14,8 @@ public interface UserService extends GenericService<User,Long>{
      * @param pass
      * @return returns null if password is not correct or email doesn't exist
      */
-    public AuthenticationResponse authenticate(AuthenticationRequest req);
-    public AuthenticationResponse register(RegisterRequest req);
-    public Optional<User> getByEmail(String email);
+    public APIResponse authenticate(AuthenticationRequest req);
+    public APIResponse register(RegisterRequest req);
+    public User getByEmail(String email);
     public String greeting(HttpServletRequest request);
 }

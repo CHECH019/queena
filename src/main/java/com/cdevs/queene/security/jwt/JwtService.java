@@ -20,17 +20,39 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    public static String extractCustomClaim(String jwt, String claim){
-        return extractClaim(jwt, c -> c.get(claim, String.class));
-    }
-
     public static String extractUsername(String jwt) {
         return extractClaim(jwt, Claims::getSubject);
     }
     
+    private static Date extractExpiration(String jwt) {
+        return extractClaim(jwt, Claims::getExpiration);
+    }
+
+    public static String extractCustomClaim(String jwt, String claim){
+        return extractClaim(jwt, c -> c.get(claim, String.class));
+    }
+
     public static <T> T  extractClaim(String jwt, Function<Claims,T> claimsResolver) {
         final Claims claims = extractAllClaims(jwt);
         return claimsResolver.apply(claims);
+    }
+    
+    private static Claims extractAllClaims(String jwt){
+        return Jwts
+            .parserBuilder()
+            .setSigningKey(getSignInKey())
+            .build()
+            .parseClaimsJws(jwt)
+            .getBody();
+    }
+
+    public static boolean isTokenValid(String jwt, UserDetails userDetails){
+        final String userEmail = extractUsername(jwt);
+        return userEmail.equals(userDetails.getUsername()) && !isTokenExpired(jwt);
+    }
+
+    private static boolean isTokenExpired(String jwt) {
+        return extractExpiration(jwt).before(new Date());
     }
 
     public static String generateToken(UserDetails userDetails){
@@ -49,28 +71,6 @@ public class JwtService {
             .setExpiration(new Date(System.currentTimeMillis()+Constants.TOKEN_VALIDITY))
             .signWith(getSignInKey(),SignatureAlgorithm.HS256)
             .compact();
-    }
-
-    public static boolean isTokenValid(String jwt, UserDetails userDetails){
-        final String userEmail = extractUsername(jwt);
-        return userEmail.equals(userDetails.getUsername()) && !isTokenExpired(jwt);
-    }
-
-    private static boolean isTokenExpired(String jwt) {
-        return extractExpiration(jwt).before(new Date());
-    }
-
-    private static Date extractExpiration(String jwt) {
-        return extractClaim(jwt, Claims::getExpiration);
-    }
-
-    private static Claims extractAllClaims(String jwt){
-        return Jwts
-            .parserBuilder()
-            .setSigningKey(getSignInKey())
-            .build()
-            .parseClaimsJws(jwt)
-            .getBody();
     }
 
     private static Key getSignInKey() {
